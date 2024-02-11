@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom's Taxonomy</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Bloom's Taxonomy Level Finder</h1>
+    <label for="numQuestions">Enter the number of main questions:</label>
+    <input type="tel" id="numQuestions" placeholder="Number of main questions" style="width: 250px;">
+    <button onclick="createQuestionInputs()" style="width: 200px;">Create Questions</button>
+    <div id="questionInputs"></div>
+
+    <button onclick="handleInput()" style="width: 200px;">Submit</button>
+    <table id="resultTable"></table>
+
+    <script>
+        function findBloomsLevel(question) {
+            const keywordLists = {
+                'remember': ['draw','choose', 'define', 'find', 'how', 'label', 'list', 'match', 'name', 'omit', 'recall', '.select', 'show', 'spell', 'tell', 'what', 'when', 'where', 'which', 'who', 'why'],
+                'understand': ['classify', 'explain', 'characteristics', 'demonstrate', 'extend', 'illustrate', 'infer', 'interpret', 'outline', 'relate', 'rephrase', 'translate', 'describe', 'summarize'],
+                'apply': ['calculate','use', 'apply', 'solve', 'build', 'construct', 'develop', 'experiment with', 'identify', 'differentiate', 'interview', 'make use of', 'accept', 'employ', 'exploit', 'extract', 'accept', 'involvement', 'model', 'organize', 'describe', 'plan', 'solve', 'utilize'],
+                'analyze': ['analyze', 'assume', 'categorize', 'conclusion', 'discover', 'detail', 'different', 'dissect', 'distinguish', 'difference', 'divide', 'examine', 'function', 'inference', 'inspect', 'motive', 'relationship', 'simplify', 'survey', 'take part in', 'test for', 'theme', 'compare', 'contrast'],
+                'evaluate': ['evaluate', 'judge', 'assess', 'advantages', 'disadvantages', 'appraise', 'award', 'choose', 'conclude', 'criteria', 'criticize', 'decide', 'deduct', 'defend', 'determine', 'disprove', 'estimate', 'importance', 'influence', 'justify', 'mark', 'measure', 'opinion', 'perceive', 'prioritize', 'prove', 'rate', 'recommend', 'ruleon', 'select', 'support', 'value'],
+                'create': ['create', 'design', 'compose', 'adapt', 'change', 'combine', 'compile', 'features', 'delete', 'discuss', 'elaborate', 'formulate', 'happen', 'imagine', 'improve', 'invent', 'makeup', 'maximize', 'minimize', 'modify', 'original', 'originate', 'predict', 'propose', 'solution', 'suppose', 'test']
+            };
+
+            // Iterate over each level and check if the question contains any keywords
+            for (const level in keywordLists) {
+                if (keywordLists[level].some(keyword => question.toLowerCase().includes(keyword))) {
+                    // Assign levels based on the provided values
+                    switch (level) {
+                        case 'remember':
+                            return "L1";
+                        case 'understand':
+                            return "L2";
+                        case 'apply':
+                            return "L3";
+                        case 'analyze':
+                            return "L4";
+                        case 'evaluate':
+                            return "L5";
+                        case 'create':
+                            return "L6";
+                        default:
+                            return 'unknown';
+                    }
+                }
+            }
+
+            // If no level is found, return 'unknown'
+            return 'unknown';
+        }
+
+        let questionsEntered = false;
+
+        function createQuestionInputs() {
+            if (questionsEntered) {
+                alert("Questions have already been entered. To re-enter, please refresh the page.");
+                return;
+            }
+
+            const numQuestions = prompt("Enter the number of main questions:");
+
+            if (Number.isInteger(parseInt(numQuestions)) && parseInt(numQuestions) > 0) {
+                const questionInputsDiv = document.getElementById("questionInputs");
+                questionInputsDiv.innerHTML = '';
+
+                for (let i = 1; i <= numQuestions; i++) {
+                    const mainQuestionLabel = document.createElement("label");
+                    mainQuestionLabel.textContent = `Main Question ${i}: `;
+                    questionInputsDiv.appendChild(mainQuestionLabel);
+
+                    const numSubQuestions = prompt(`Enter the number of sub-questions for Main Question ${i}:`);
+
+                    if (!isNaN(numSubQuestions) && parseInt(numSubQuestions) > 0) {
+                        for (let j = 1; j <= numSubQuestions; j++) {
+                            const subQuestionInput = document.createElement("input");
+                            subQuestionInput.type = "text";
+                            subQuestionInput.placeholder = `Sub-question ${String.fromCharCode(96 + j)}: `;
+                            subQuestionInput.id = `subQuestionInput${i}_${j}`;
+
+                            const orLabel = document.createElement("label");
+                            orLabel.textContent = "or";
+                            orLabel.style.margin = "0 5px";
+
+                            const moduleInput = document.createElement("input");
+                            moduleInput.type = "text";
+                            moduleInput.placeholder = `Module: `;
+                            moduleInput.id = `moduleInput${i}_${j}`;
+
+                            const marksInput = document.createElement("input");
+                            marksInput.type = "text";
+                            marksInput.placeholder = `Marks: `;
+                            marksInput.id = `marksInput${i}_${j}`;
+
+                            questionInputsDiv.appendChild(subQuestionInput);
+                            questionInputsDiv.appendChild(moduleInput);
+                            questionInputsDiv.appendChild(marksInput);
+                        }
+                    } else {
+                        alert(`Please enter a valid number of sub-questions for Main Question ${i}.`);
+                        return;
+                    }
+                }
+
+                questionsEntered = true;
+            } else {
+                alert("Please enter a valid number of main questions.");
+            }
+        }
+
+        function handleInput() {
+            if (!questionsEntered) {
+                alert("Please enter questions before submitting.");
+                return;
+            }
+
+            const numQuestions = document.getElementById("numQuestions").value;
+            const enteredQuestions = [];
+
+            for (let i = 1; i <= numQuestions; i++) {
+                const questionData = {
+                    mainQuestion: `${i}`,
+                    subQuestions: []
+                };
+
+                for (let j = 1; ; j++) {
+                    const subQuestionInput = document.getElementById(`subQuestionInput${i}_${j}`);
+                    if (!subQuestionInput) {
+                        break;
+                    }
+
+                    const moduleInput = document.getElementById(`moduleInput${i}_${j}`);
+                    const marksInput = document.getElementById(`marksInput${i}_${j}`);
+
+                    const subQuestion = subQuestionInput.value;
+                    const userEnteredQuestion = subQuestionInput.value; // Use value instead of placeholder
+                    const module = moduleInput.value;
+                    const marks = marksInput.value;
+
+                    if (subQuestion.trim() !== "" && module.trim() !== "" && marks.trim() !== "") {
+                        questionData.subQuestions.push({
+                            subQuestion: `Sub-question ${String.fromCharCode(96 + j)}`,
+                            userEnteredQuestion: userEnteredQuestion, // Include user-entered question
+                            bloomsLevel: findBloomsLevel(subQuestion),
+                            module: module,
+                            marks: marks
+                        });
+                    } else {
+                        alert(`Please fill in all fields for Sub-question ${String.fromCharCode(96 + j)} of Main Question ${i}.`);
+                        return;
+                    }
+                }
+
+                enteredQuestions.push(questionData);
+            }
+
+            // Encode entered questions as a URL parameter
+            const encodedQuestions = encodeURIComponent(JSON.stringify(enteredQuestions));
+
+            // Navigate to the result page with the encoded questions as a parameter
+            window.location.href= `2result2.html?questions=${encodedQuestions}`;
+        }
+    </script>
+    <!--footer start-->
+    <footer id="footer" class="footer">
+        <div class="container">
+            <!-- Your footer content... -->
+        </div>
+        <div class="hm-footer-copyright" id="contact">
+            <div class="row">
+                <div class="col-sm-5">
+                    <p>
+                        &copy; Copyright Designed and developed by SYNERGY
+                        <a href="mailto:vashistkumartiwari@gmail.com">Admin</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--/.footer-->
+</body>
+
+</html>

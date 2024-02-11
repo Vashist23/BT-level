@@ -1,0 +1,127 @@
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        output{
+            width: calc(100% - 24px);
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 10px; /* Add margin-bottom for input fields */
+        }
+
+        #numQuestions {
+            width: 80%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #74a9d2;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #5e7e90;
+        }
+
+        #questionInputs {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .inputContainer {
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: calc(100% - 24px);
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 10px; /* Add margin-bottom for input fields */
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        th {
+            background-color: #74a9d2;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #footer {
+            color: black;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .hm-footer-copyright {
+            margin-top: 20px;
+        }
+
+        /* New styles for responsiveness */
+        @media screen and (max-width: 768px) {
+            #numQuestions,
+            button,
+            input {
+                width: 100%;
+            }
+
+            table {
+                width: 100%;
+            }
+        }
+        #button{
+            display: none;
+        }

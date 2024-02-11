@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result Page</title>
+    <link rel="stylesheet" href="style2.css">
+    <style>
+        .spacer {
+            margin-trim: 4px; /* Adjust the value to increase or decrease the space */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="spacer">
+        <input type="text">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type="text">&emsp;&emsp;&emsp;&emsp;&emsp;<input type="text">
+    </div>
+    <header>
+        <img class="logo" src="https://gyaanarth.com/wp-content/uploads/2022/06/logo-20.png" alt="Logo">
+        <div class="header-content">
+            <h1>MALLA REDDY ENGINEERING COLLEGE (AUTONOMOUS)</h1>
+            <h7>Maisammaguda,Dhulapally,(Post Via Kompally),Secunderabad-500100.</h7>
+            <p id="subject" contenteditable="true" style="max-width: fit-content;">Your Subject Here</p>
+        </div>
+    </header>
+    <br>
+    <table id="resultTable">
+        
+        <tr>
+            <th>S.No</th>
+            <th>Question</th>
+            <th>Bloom's Level</th>
+            <th>Module</th>
+            <th>Marks</th>
+        </tr>
+    </table>
+
+
+    <script>
+        // Retrieve encoded questions from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const encodedQuestions = urlParams.get('questions');
+
+        if (encodedQuestions) {
+            // Decode and parse the questions
+            const decodedQuestions = JSON.parse(decodeURIComponent(encodedQuestions));
+
+            // Display the results in a table
+            const resultTable = document.getElementById('resultTable');
+            let previousMainQuestion = null;
+
+            for (let i = 0; i < decodedQuestions.length; i++) {
+                const questionData = decodedQuestions[i];
+
+                for (let j = 0; j < questionData.subQuestions.length; j++) {
+                    const subQuestionData = questionData.subQuestions[j];
+                    const row = resultTable.insertRow();
+
+                    // S.No Column
+                    const serialNumberCell = row.insertCell(0);
+                    serialNumberCell.textContent = i + 1;
+
+                    // Question Column
+                    const questionCell = row.insertCell(1);
+                    questionCell.textContent = subQuestionData.userEnteredQuestion;
+
+                    // Bloom's Level Column
+                    const bloomsLevelCell = row.insertCell(2);
+                    bloomsLevelCell.textContent = subQuestionData.bloomsLevel;
+
+                    // Module Column
+                    const moduleCell = row.insertCell(3);
+                    moduleCell.textContent = subQuestionData.module;
+
+                    // Marks Column
+                    const marksCell = row.insertCell(4);
+                    marksCell.textContent = subQuestionData.marks;
+
+                    // Merge cells in the Question column for rows with the same sub-question
+                    if (j > 0 && subQuestionData.subQuestion === questionData.subQuestions[j - 1].subQuestion) {
+                        questionCell.rowSpan++;
+                    }
+                }
+            }
+        }
+        
+
+        // Add event listener to the print button
+        // Function to trigger printing
+        function printQuestions() {
+            window.print();
+        }
+        //const printButton = document.createElement('button');
+        //printButton.textContent = 'Print Questions';
+        //printButton.addEventListener('click', printQuestions);
+
+        // Append the print button to the body
+        document.body.appendChild(printButton);
+        document.getElementById('printButton').style.display = 'none';
+    </script>
+</body>
+<footer>
+    <!--footer start-->
+    <p style="opacity: 50%;">
+        *Bloom's Taxonomy Level (BT Level):<span>&nbsp;L1-Remember&nbsp;,&nbsp;L2-Understand&nbsp;,&nbsp;L3-Apply&nbsp;,&nbsp;L4-Analyse&nbsp;,&nbsp;L5-Evaluate&nbsp;,&nbsp;L6-Create&nbsp;</span>
+    </p>
+    <button id="printButton" onclick="printQuestions()";">Print</button>
+     <footer id="footer" class="footer">
+        <div class="container">
+            <!-- Your footer content... -->
+        </div>
+        <div class="hm-footer-copyright" id="contact">
+            <div class="row">
+                <div class="col-sm-5">
+                    <p>
+                        &copy; Copyright  Designed and developed by SYNERGY
+                        <a href="mailto:vashistkumartiwari@gmail.com">Admin</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</html>
